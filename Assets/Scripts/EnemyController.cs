@@ -24,7 +24,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (canMove)
+        if (LevelManager.instance.enemyCanMove())
         {
             Move();
         }
@@ -65,7 +65,7 @@ public class EnemyController : MonoBehaviour
         currentWaypoint = 0;
     }
 
-    void Move();
+    void Move()
     {
         if (path != null && currentWaypoint < path.Count)
         {
@@ -75,7 +75,8 @@ public class EnemyController : MonoBehaviour
             // Check if the enemy has reached the current waypoint
             if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.1f)
             {
-                canMove = false;
+                // Set can move to false
+                LevelManager.instance.enemyCanMove();
             }
         }
     }
