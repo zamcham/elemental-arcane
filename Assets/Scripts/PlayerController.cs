@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         moveInput = value.Get<Vector2>();
     }
 
-     void Move()
+    void Move()
     {
         Vector3 targetHorizontalPos = new Vector3(moveInput.x, 0f, 0f);
         Vector3 targetVerticalPos = new Vector3(0f, moveInput.y, 0f);
@@ -51,4 +51,3 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-
