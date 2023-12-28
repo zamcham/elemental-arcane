@@ -7,12 +7,13 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask notWalkable;
-    [SerializeField] float moveSpeed = 5f;
+    [SerializeField] float moveSpeed;
     Vector2 moveInput;
 
     void Start()
     {
         movePoint.parent = null;
+        moveSpeed = LevelManager.instance.GetCharactersMoveSpeed();
     }
 
     void Update()
@@ -23,7 +24,7 @@ public class PlayerController : MonoBehaviour
     void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
-        LevelManager.instance.ToggeleEnemyMovementBool();
+        LevelManager.instance.SetEnemyMoveTrue();
     }
 
     void Move()
@@ -33,7 +34,7 @@ public class PlayerController : MonoBehaviour
         
         transform.position = Vector3.MoveTowards(transform.position, movePoint.position, moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position, movePoint.position) <= 0.05f)
+        if (Vector3.Distance(transform.position, movePoint.position) <= 0.01f)
         {
             if (Mathf.Abs(moveInput.x) == 1f)
             {

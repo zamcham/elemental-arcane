@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    LevelManager instance;
-    bool enemyCanMove;
+    public static LevelManager instance;
+    public bool enemyCanMove;
+
+    [SerializeField] float charactersMoveSpeed;
 
     void Awake()
     {
@@ -31,13 +33,24 @@ public class LevelManager : MonoBehaviour
         
     }
 
-    public void ToggeleEnemyMovementBool()
+    public void SetEnemyMoveTrue()
     {
-        enemyCanMove = !enemyCanMove;
+        enemyCanMove = true;
+        Debug.Log("Enemy can move");
     }
 
-    public void enemyCanMove()
+    public void SetEnemyMoveFalse()
+    {
+        enemyCanMove = false;
+    }
+
+    public bool MoveEnemy()
     {
         return enemyCanMove;
+    }
+
+    public float GetCharactersMoveSpeed()
+    {
+        return charactersMoveSpeed;
     }
 }

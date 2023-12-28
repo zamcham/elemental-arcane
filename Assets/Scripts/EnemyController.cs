@@ -6,10 +6,9 @@ public class EnemyController : MonoBehaviour
 {
     public Transform player;
     public Transform enemy;
-    public float moveSpeed = 1f; // Adjust the speed as needed
+    public float moveSpeed;
     public List<Vector3> path;
     private int currentWaypoint = 0;
-    bool canMove = true;
 
     void Awake()
     {
@@ -18,13 +17,14 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        moveSpeed = LevelManager.instance.GetCharactersMoveSpeed();
         CalculatePath();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (LevelManager.instance.enemyCanMove())
+        if (LevelManager.instance.MoveEnemy())
         {
             Move();
         }
@@ -33,30 +33,34 @@ public class EnemyController : MonoBehaviour
 
     void CalculatePath()
     {
-        // Use A* algorithm to calculate the path
-        // You can implement your own A* algorithm or use a library like AstarPathfindingProject
-
-        // For this example, a simple straight line path is calculated
         path = new List<Vector3>();
         Vector3 currentPos = transform.position;
+        float deltaX = Mathf.Abs(player.position.x - currentPos.x);
+        float deltaY = Mathf.Abs(player.position.y - currentPos.y);
 
-        while (currentPos != player.position)
+        for (int i = 0; i < 2; i++)
         {
-            if (currentPos.x > player.position.x)
+            if (deltaX > deltaY)
             {
-                currentPos.x--;
-            }
-            else if (currentPos.x < player.position.x)
+                if (currentPos.x > player.position.x)
+                {
+                    currentPos.x--;
+                }
+                else if (currentPos.x < player.position.x)
+                {
+                    currentPos.x++;
+                }
+                }
+            else
             {
-                currentPos.x++;
-            }
-            else if (currentPos.y > player.position.y)
-            {
-                currentPos.y--;
-            }
-            else if (currentPos.y < player.position.y)
-            {
-                currentPos.y++;
+                if (currentPos.y > player.position.y)
+                {
+                    currentPos.y--;
+                }
+                else if (currentPos.y < player.position.y)
+                {
+                    currentPos.y++;
+                }
             }
 
             path.Add(currentPos);
@@ -73,10 +77,11 @@ public class EnemyController : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, path[currentWaypoint], moveSpeed * Time.deltaTime);
 
             // Check if the enemy has reached the current waypoint
-            if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.1f)
+            if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.01f)
             {
-                // Set can move to false
-                LevelManager.instance.enemyCanMove();
+                transform.position = path[currentWaypoint];
+                LevelManager.instance.SetEnemyMoveFalse();
+                CalculatePath();  
             }
         }
     }
