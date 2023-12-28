@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed = 1f; // Adjust the speed as needed
     public List<Vector3> path;
     private int currentWaypoint = 0;
+    bool canMove = true;
 
     void Awake()
     {
@@ -23,6 +24,10 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (canMove)
+        {
+            Move();
+        }
 
     }
 
@@ -57,11 +62,22 @@ public class EnemyController : MonoBehaviour
             path.Add(currentPos);
         }
 
-        // Reverse the path to move from the enemy to the player
-        path.Reverse();
-
-        // Reset the waypoint index
         currentWaypoint = 0;
+    }
+
+    void Move();
+    {
+        if (path != null && currentWaypoint < path.Count)
+        {
+            // Move towards the current waypoint
+            transform.position = Vector3.MoveTowards(transform.position, path[currentWaypoint], moveSpeed * Time.deltaTime);
+
+            // Check if the enemy has reached the current waypoint
+            if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.1f)
+            {
+                canMove = false;
+            }
+        }
     }
 
 }
