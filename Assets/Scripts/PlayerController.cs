@@ -6,9 +6,9 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform movePoint;
+    [SerializeField] LayerMask notWalkable;
+    [SerializeField] float moveSpeed = 5f;
     Vector2 moveInput;
-    float moveSpeed = 5f;
-    LayerMask notWalkable;
 
     void Start()
     {
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        
+        Move();
     }
 
     void OnMove(InputValue value)
