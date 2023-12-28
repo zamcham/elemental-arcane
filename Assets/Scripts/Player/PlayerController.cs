@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] Transform movePoint;
     [SerializeField] LayerMask notWalkable;
+    [SerializeField] LayerMask enemyLayer;
     [SerializeField] float moveSpeed;
     Vector2 moveInput;
 
@@ -36,18 +37,29 @@ public class PlayerController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, movePoint.position) <= 0.01f)
         {
+            Collider2D enemyCollider = Physics2D.OverlapCircle(movePoint.position + targetHorizontalPos, 0.2f, enemyLayer);
+
             if (Mathf.Abs(moveInput.x) == 1f)
             {
                 if (!Physics2D.OverlapCircle(movePoint.position + targetHorizontalPos, 0.2f, notWalkable))
                 {
                     movePoint.position += targetHorizontalPos;
                 }
+                else if (enemyCollider != null)
+                {
+                    Debug.Log("Enemy hit");
+                }
+
             }
             else if (Mathf.Abs(moveInput.y) == 1f)
             {
                 if (!Physics2D.OverlapCircle(movePoint.position + targetVerticalPos, 0.2f, notWalkable))
                 {
                     movePoint.position += targetVerticalPos;
+                }
+                else if (enemyCollider != null)
+                {
+                    Debug.Log("Enemy hit");
                 }
             }
         }
