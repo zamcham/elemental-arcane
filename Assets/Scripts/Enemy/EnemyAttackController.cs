@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class EnemyAttackController : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    EnemyController enemyController;
+
+    void Awake()
+    {
+        enemyController = GetComponentInParent<EnemyController>();
+    }
+
     void Start()
     {
         
@@ -19,7 +26,8 @@ public class EnemyAttackController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) 
     {
         if (other.gameObject.tag == "Player") {
-            Debug.Log("Player Touched");
+            Debug.Log("Player entered danger zone");
+            enemyController.ToggleTriggeredDangerZone();
         }
     }
 }

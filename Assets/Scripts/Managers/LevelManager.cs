@@ -6,6 +6,7 @@ public class LevelManager : MonoBehaviour
 {
     public static LevelManager instance;
     public bool enemyCanMove;
+    bool playerInDanger;
 
     [SerializeField] float charactersMoveSpeed;
 
@@ -53,4 +54,17 @@ public class LevelManager : MonoBehaviour
     {
         return charactersMoveSpeed;
     }
+
+    //Check if the player is in danger
+    // if it;s in danger the next time they move, check if they moved
+    // into a danger zone
+    // if they did, then they die
+    // if they didn't, then they're safe
+    public void PlayerInDanger(bool danger)
+    {
+        playerInDanger = danger;
+    }
+
+    
+
 }

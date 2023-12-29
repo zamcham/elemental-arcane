@@ -9,6 +9,8 @@ public class EnemyController : MonoBehaviour
     public float moveSpeed;
     public List<Vector3> path;
     private int currentWaypoint = 0;
+    bool triggeredDangerZone;
+    List<Vector3> dangerZones;
 
     void Awake()
     {
@@ -24,7 +26,7 @@ public class EnemyController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (LevelManager.instance.MoveEnemy())
+        if (LevelManager.instance.MoveEnemy() && !triggeredDangerZone)
         {
             Move();
         }
@@ -81,9 +83,25 @@ public class EnemyController : MonoBehaviour
             {
                 transform.position = path[currentWaypoint];
                 LevelManager.instance.SetEnemyMoveFalse();
+                GenerateDangerZones();
                 CalculatePath();  
             }
         }
     }
 
+    public void ToggleTriggeredDangerZone()
+    {
+        transform.position = path[currentWaypoint];
+        triggeredDangerZone = !triggeredDangerZone;
+    }
+
+    void GenerateDangerZones()
+    {
+        dangerZones = new List<Vector3>();
+
+        dangerZones.Add(transform.position + new Vector3(1f, 0f, 0f)); // +1 on the x
+        dangerZones.Add(transform.position + new Vector3(-1f, 0f, 0f)); // -1 on the x
+        dangerZones.Add(transform.position + new Vector3(0f, 1f, 0f)); // +1 on the y
+        dangerZones.Add(transform.position + new Vector3(0f, -1f, 0f)); // -1 on the y
+    }
 }
