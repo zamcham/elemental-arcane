@@ -7,6 +7,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     public bool enemyCanMove;
     bool playerInDanger;
+    List<Vector3> dangerZones = new List<Vector3>();
 
     [SerializeField] float charactersMoveSpeed;
 
@@ -55,16 +56,20 @@ public class LevelManager : MonoBehaviour
         return charactersMoveSpeed;
     }
 
-    //Check if the player is in danger
-    // if it;s in danger the next time they move, check if they moved
-    // into a danger zone
-    // if they did, then they die
-    // if they didn't, then they're safe
-    public void PlayerInDanger(bool danger)
+    public void PlayerInDanger(List<Vector3> dangerZones)
     {
-        playerInDanger = danger;
+        playerInDanger = true;
+        this.dangerZones = dangerZones;
     }
 
-    
+    public bool IsInDanger()
+    {
+        return playerInDanger;
+    }
+
+    public List<Vector3> GetDangerZones()
+    {
+        return dangerZones;
+    }
 
 }

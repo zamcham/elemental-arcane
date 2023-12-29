@@ -5,32 +5,50 @@ using UnityEngine;
 public class EnemyController : MonoBehaviour
 {
     public Transform player;
-    public Transform enemy;
     public float moveSpeed;
     public List<Vector3> path;
     private int currentWaypoint = 0;
     bool triggeredDangerZone;
-    List<Vector3> dangerZones;
+    public List<Vector3> dangerZones;
 
     void Awake()
     {
         player = FindObjectOfType<PlayerController>().transform;
+        moveSpeed = LevelManager.instance.GetCharactersMoveSpeed();
     }
 
     void Start()
     {
-        moveSpeed = LevelManager.instance.GetCharactersMoveSpeed();
+        
         CalculatePath();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (LevelManager.instance.MoveEnemy() && !triggeredDangerZone)
+        if (LevelManager.instance.MoveEnemy())
         {
             Move();
         }
 
+    }
+
+    void Move()
+    {
+        if (path != null && currentWaypoint < path.Count)
+        {
+            // Move towards the current waypoint
+            transform.position = Vector3.MoveTowards(transform.position, path[currentWaypoint], moveSpeed * Time.deltaTime);
+
+            // Check if the enemy has reached the current waypoint
+            if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.01f)
+            {
+                transform.position = path[currentWaypoint];
+                LevelManager.instance.SetEnemyMoveFalse();
+                GenerateDangerZones();
+                CalculatePath();  
+            }
+        }
     }
 
     void CalculatePath()
@@ -69,30 +87,6 @@ public class EnemyController : MonoBehaviour
         }
 
         currentWaypoint = 0;
-    }
-
-    void Move()
-    {
-        if (path != null && currentWaypoint < path.Count)
-        {
-            // Move towards the current waypoint
-            transform.position = Vector3.MoveTowards(transform.position, path[currentWaypoint], moveSpeed * Time.deltaTime);
-
-            // Check if the enemy has reached the current waypoint
-            if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.01f)
-            {
-                transform.position = path[currentWaypoint];
-                LevelManager.instance.SetEnemyMoveFalse();
-                GenerateDangerZones();
-                CalculatePath();  
-            }
-        }
-    }
-
-    public void ToggleTriggeredDangerZone()
-    {
-        transform.position = path[currentWaypoint];
-        triggeredDangerZone = !triggeredDangerZone;
     }
 
     void GenerateDangerZones()

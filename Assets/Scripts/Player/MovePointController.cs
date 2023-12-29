@@ -35,6 +35,16 @@ public class MovePointController : MonoBehaviour
             {
                 if (!Physics2D.OverlapCircle(transform.position + targetHorizontalPos, 0.2f, notWalkable))
                 {
+                    if (LevelManager.instance.IsInDanger())
+                    {
+                        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
+                        Vector3 futurePosition = transform.position + targetHorizontalPos;
+                        if (dangerZones.Contains(futurePosition))
+                        {
+                            // Future position is in a danger zone
+                            Debug.Log("Player will move into a danger zone!");
+                        }
+                    }
                     transform.position += targetHorizontalPos;
                     playerCanMove = true;
                 }
@@ -43,6 +53,16 @@ public class MovePointController : MonoBehaviour
             {
                 if (!Physics2D.OverlapCircle(transform.position + targetVerticalPos, 0.2f, notWalkable))
                 {
+                    if (LevelManager.instance.IsInDanger())
+                    {
+                        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
+                        Vector3 futurePosition = transform.position + targetVerticalPos;
+                        if (dangerZones.Contains(futurePosition))
+                        {
+                            // Future position is in a danger zone
+                            Debug.Log("Player will move into a danger zone!");
+                        }
+                    }
                     transform.position += targetVerticalPos;
                     playerCanMove = true;
                 }
