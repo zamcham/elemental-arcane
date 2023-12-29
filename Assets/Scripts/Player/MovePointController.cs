@@ -60,13 +60,11 @@ public class MovePointController : MonoBehaviour
             Debug.Log("Player will move into a danger zone!");
             
         }
-        else
-        {
-            LevelManager.instance.SetEnemyMoveTrue();
-        }
 
         transform.position += targetHorizontalPos;
         playerCanMove = true;
+        Debug.Log("Player moved");
+        LevelManager.instance.SetEnemyMoveTrue();
     }
 
     void HandleVerticalMovement(Vector3 targetVerticalPos)
@@ -81,12 +79,10 @@ public class MovePointController : MonoBehaviour
             Debug.Log("Player will move into a danger zone!");
             
         }
-        else
-        {
-            LevelManager.instance.SetEnemyMoveTrue();
-        }
 
         transform.position += targetVerticalPos;
         playerCanMove = true;
+        Debug.Log("Player moved");
+        LevelManager.instance.SetEnemyMoveTrue();
     }
 }

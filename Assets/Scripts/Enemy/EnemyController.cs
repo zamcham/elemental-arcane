@@ -48,15 +48,16 @@ public class EnemyController : MonoBehaviour
         {
             // Move towards the current waypoint
             transform.position = Vector3.MoveTowards(transform.position, path[currentWaypoint], moveSpeed * Time.deltaTime);
-
-            // Check if the enemy has reached the current waypoint
+            
             if (Vector3.Distance(transform.position, path[currentWaypoint]) < 0.01f)
             {
                 transform.position = path[currentWaypoint];
                 LevelManager.instance.SetEnemyMoveFalse();
                 GenerateDangerZones();
+                LevelManager.instance.AddDangerZones(dangerZones);
                 CalculatePath(); 
                 ToggleAttackMode(); 
+                Debug.Log("Enemy moved");
             }
         }
     }
@@ -117,7 +118,6 @@ public class EnemyController : MonoBehaviour
             {
                 isAttacking = true;
                 Debug.Log("Enemy is attacking!");
-                LevelManager.instance.PlayerInDanger(dangerZones);
                 remainingTurnsInAttackMode--;
             }
             else

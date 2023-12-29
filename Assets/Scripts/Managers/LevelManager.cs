@@ -7,7 +7,7 @@ public class LevelManager : MonoBehaviour
     public static LevelManager instance;
     public bool enemyCanMove;
     bool playerInDanger;
-    List<Vector3> dangerZones = new List<Vector3>();
+    public List<Vector3> dangerZones = new List<Vector3>();
 
     public bool gameOver;
 
@@ -58,12 +58,6 @@ public class LevelManager : MonoBehaviour
         return charactersMoveSpeed;
     }
 
-    public void PlayerInDanger(List<Vector3> dangerZones)
-    {
-        playerInDanger = true;
-        this.dangerZones = dangerZones;
-    }
-
     public bool IsInDanger()
     {
         return playerInDanger;
@@ -72,6 +66,19 @@ public class LevelManager : MonoBehaviour
     public List<Vector3> GetDangerZones()
     {
         return dangerZones;
+    }
+
+    public void ResetDangerZones()
+    {
+        dangerZones.Clear();
+    }
+
+    public void AddDangerZones(List<Vector3> dangerZones)
+    {
+        foreach (Vector3 dangerZone in dangerZones)
+        {
+            this.dangerZones.Add(dangerZone);
+        }   
     }
 
 }
