@@ -58,7 +58,6 @@ public class MovePointController : MonoBehaviour
             // Future position is in a danger zone
             LevelManager.instance.SetEnemyMoveFalse();
             Debug.Log("Player will move into a danger zone!");
-            
         }
 
         transform.position += targetHorizontalPos;
@@ -77,7 +76,6 @@ public class MovePointController : MonoBehaviour
             // Future position is in a danger zone
             LevelManager.instance.SetEnemyMoveFalse();
             Debug.Log("Player will move into a danger zone!");
-            
         }
 
         transform.position += targetVerticalPos;
