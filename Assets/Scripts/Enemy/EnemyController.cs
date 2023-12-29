@@ -11,15 +11,24 @@ public class EnemyController : MonoBehaviour
     bool triggeredDangerZone;
     public List<Vector3> dangerZones;
 
+    bool isAttacking;
+    int turnsToAttack;
+    int currentTurn;
+    int turnsInAttackMode;
+    int remainingTurnsInAttackMode;
+
     void Awake()
     {
         player = FindObjectOfType<PlayerController>().transform;
         moveSpeed = LevelManager.instance.GetCharactersMoveSpeed();
+        turnsToAttack = Random.Range(2, 4);
+        currentTurn = 0;
+        turnsInAttackMode = Random.Range(1, 3);
+        remainingTurnsInAttackMode = turnsInAttackMode;
     }
 
     void Start()
     {
-        
         CalculatePath();
     }
 
@@ -46,7 +55,8 @@ public class EnemyController : MonoBehaviour
                 transform.position = path[currentWaypoint];
                 LevelManager.instance.SetEnemyMoveFalse();
                 GenerateDangerZones();
-                CalculatePath();  
+                CalculatePath(); 
+                ToggleAttackMode(); 
             }
         }
     }
@@ -98,4 +108,32 @@ public class EnemyController : MonoBehaviour
         dangerZones.Add(transform.position + new Vector3(0f, 1f, 0f)); // +1 on the y
         dangerZones.Add(transform.position + new Vector3(0f, -1f, 0f)); // -1 on the y
     }
+    
+    void ToggleAttackMode()
+    {
+        if (currentTurn >= turnsToAttack)
+        {
+            if (remainingTurnsInAttackMode > 0)
+            {
+                isAttacking = true;
+                Debug.Log("Enemy is attacking!");
+                LevelManager.instance.PlayerInDanger(dangerZones);
+                remainingTurnsInAttackMode--;
+            }
+            else
+            {
+                // Reset attack mode
+                isAttacking = false;
+                currentTurn = 0;
+                remainingTurnsInAttackMode = turnsInAttackMode;
+            }
+        }
+        else
+        {
+            isAttacking = false;
+            currentTurn++;
+        }
+    }
 }
+
+

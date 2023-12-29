@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
     bool playerInDanger;
     List<Vector3> dangerZones = new List<Vector3>();
 
+    public bool gameOver;
+
     [SerializeField] float charactersMoveSpeed;
 
     void Awake()

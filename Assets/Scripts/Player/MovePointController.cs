@@ -39,14 +39,27 @@ public class MovePointController : MonoBehaviour
                     {
                         List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
                         Vector3 futurePosition = transform.position + targetHorizontalPos;
+
                         if (dangerZones.Contains(futurePosition))
                         {
                             // Future position is in a danger zone
+                            LevelManager.instance.SetEnemyMoveFalse();
                             Debug.Log("Player will move into a danger zone!");
+                            
                         }
+                        else
+                        {
+                            LevelManager.instance.SetEnemyMoveTrue();
+                        }
+
+                        transform.position += targetHorizontalPos;
                     }
-                    transform.position += targetHorizontalPos;
-                    playerCanMove = true;
+                    else
+                    {
+                        LevelManager.instance.SetEnemyMoveTrue();
+                        transform.position += targetHorizontalPos;
+                        playerCanMove = true;
+                    }
                 }
             }
             else if (Mathf.Abs(inputVector.y) == 1f)
@@ -57,14 +70,27 @@ public class MovePointController : MonoBehaviour
                     {
                         List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
                         Vector3 futurePosition = transform.position + targetVerticalPos;
+
                         if (dangerZones.Contains(futurePosition))
                         {
                             // Future position is in a danger zone
+                            LevelManager.instance.SetEnemyMoveFalse();
                             Debug.Log("Player will move into a danger zone!");
+                            
                         }
+                        else
+                        {
+                            LevelManager.instance.SetEnemyMoveTrue();
+                        }
+
+                        transform.position += targetVerticalPos;
                     }
-                    transform.position += targetVerticalPos;
-                    playerCanMove = true;
+                    else
+                    {
+                        LevelManager.instance.SetEnemyMoveTrue();
+                        transform.position += targetVerticalPos;
+                        playerCanMove = true;
+                    }
                 }
             }
         }
