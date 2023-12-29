@@ -35,64 +35,58 @@ public class MovePointController : MonoBehaviour
             {
                 if (!Physics2D.OverlapCircle(transform.position + targetHorizontalPos, 0.2f, notWalkable))
                 {
-                    if (LevelManager.instance.IsInDanger())
-                    {
-                        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
-                        Vector3 futurePosition = transform.position + targetHorizontalPos;
-
-                        if (dangerZones.Contains(futurePosition))
-                        {
-                            // Future position is in a danger zone
-                            LevelManager.instance.SetEnemyMoveFalse();
-                            Debug.Log("Player will move into a danger zone!");
-                            
-                        }
-                        else
-                        {
-                            LevelManager.instance.SetEnemyMoveTrue();
-                        }
-
-                        transform.position += targetHorizontalPos;
-                    }
-                    else
-                    {
-                        LevelManager.instance.SetEnemyMoveTrue();
-                        transform.position += targetHorizontalPos;
-                        playerCanMove = true;
-                    }
+                    HandleHorizontalMovement(targetHorizontalPos);
                 }
             }
             else if (Mathf.Abs(inputVector.y) == 1f)
             {
                 if (!Physics2D.OverlapCircle(transform.position + targetVerticalPos, 0.2f, notWalkable))
                 {
-                    if (LevelManager.instance.IsInDanger())
-                    {
-                        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
-                        Vector3 futurePosition = transform.position + targetVerticalPos;
-
-                        if (dangerZones.Contains(futurePosition))
-                        {
-                            // Future position is in a danger zone
-                            LevelManager.instance.SetEnemyMoveFalse();
-                            Debug.Log("Player will move into a danger zone!");
-                            
-                        }
-                        else
-                        {
-                            LevelManager.instance.SetEnemyMoveTrue();
-                        }
-
-                        transform.position += targetVerticalPos;
-                    }
-                    else
-                    {
-                        LevelManager.instance.SetEnemyMoveTrue();
-                        transform.position += targetVerticalPos;
-                        playerCanMove = true;
-                    }
+                    HandleHorizontalMovement(targetVerticalPos);
                 }
             }
         }
+    }
+
+    void HandleHorizontalMovement(Vector3 targetHorizontalPos)
+    {
+        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
+        Vector3 futurePosition = transform.position + targetHorizontalPos;
+
+        if (dangerZones.Contains(futurePosition))
+        {
+            // Future position is in a danger zone
+            LevelManager.instance.SetEnemyMoveFalse();
+            Debug.Log("Player will move into a danger zone!");
+            
+        }
+        else
+        {
+            LevelManager.instance.SetEnemyMoveTrue();
+        }
+
+        transform.position += targetHorizontalPos;
+        playerCanMove = true;
+    }
+
+    void HandleVerticalMovement(Vector3 targetVerticalPos)
+    {
+        List<Vector3> dangerZones = LevelManager.instance.GetDangerZones();
+        Vector3 futurePosition = transform.position + targetVerticalPos;
+
+        if (dangerZones.Contains(futurePosition))
+        {
+            // Future position is in a danger zone
+            LevelManager.instance.SetEnemyMoveFalse();
+            Debug.Log("Player will move into a danger zone!");
+            
+        }
+        else
+        {
+            LevelManager.instance.SetEnemyMoveTrue();
+        }
+
+        transform.position += targetVerticalPos;
+        playerCanMove = true;
     }
 }
